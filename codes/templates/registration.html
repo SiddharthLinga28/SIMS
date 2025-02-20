@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Business</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/registration.css') }}">
+    <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Register Your Business</h2>
+        <form id="registrationForm">
+            <label for="ownerName">Owner Name:</label>
+            <input type="text" name="ownerName" required>
+
+            <label for="businessName">Business Name:</label>
+            <input type="text" name="businessName" required>
+
+            <label for="businessType">Business Type:</label>
+            <select name="businessType" required>
+                <option value="textile">Textile</option>
+                <option value="electronics">Electronics</option>
+                <option value="stationery">Stationery</option>
+            </select>
+
+            <label for="location">Business Location:</label>
+            <input type="text" name="location" required>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+
+            <h3>List of Items</h3>
+            <table id="itemsTable">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Variation/Version</th>
+                    <th>Cost</th>
+                </tr>
+                <tr>
+                    <td><input type="text" name="item_name"></td>
+                    <td><input type="text" name="item_variation"></td>
+                    <td><input type="text" name="item_cost"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="item_name"></td>
+                    <td><input type="text" name="item_variation"></td>
+                    <td><input type="text" name="item_cost"></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="item_name"></td>
+                    <td><input type="text" name="item_variation"></td>
+                    <td><input type="text" name="item_cost"></td>
+                </tr>
+            </table>
+            <button type="button" onclick="addRow()">Add More Rows</button>
+            
+            <button type="reset">Clear</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            fetch("/register", {
+                method: "POST",
+                body: new FormData(this)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccessPopup(data.store_id);
+                }
+            });
+        });
+
+        function addRow() {
+            let table = document.getElementById("itemsTable");
+            let row = table.insertRow(-1);
+            row.innerHTML = '<td><input type="text" name="item_name"></td>' +
+                            '<td><input type="text" name="item_variation"></td>' +
+                            '<td><input type="text" name="item_cost"></td>';
+        }
+    </script>
+</body>
+</html>

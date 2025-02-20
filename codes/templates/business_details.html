@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/business_details.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{ business.ownerName }}</h2>
+        <p><strong>Business Name:</strong> {{ business.businessName }}</p>
+        <p><strong>Business Type:</strong> {{ business.businessType }}</p>
+        <p><strong>Location:</strong> {{ business.location }}</p>
+
+        <h3>Items Sold:</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Variation</th>
+                <th>Cost</th>
+            </tr>
+            {% if business.items %}
+                {% for item in business.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.variation }}</td>
+                    <td>${{ item.cost }}</td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">No items found</td>
+                </tr>
+            {% endif %}
+        </table>
+
+        <a href="/logout" class="logout">Logout</a>
+    </div>
+</body>
+</html>
